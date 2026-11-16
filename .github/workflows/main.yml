@@ -1,0 +1,39 @@
+name: EasyShop CI Pipeline
+
+on:
+  push:
+    branches:
+      - main
+
+  pull_request:
+    branches:
+      - main
+
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: Build and Test EasyShop
+    runs-on: self-hosted
+
+    steps:
+      - name: Checkout Source Code
+        uses: actions/checkout@v4
+
+      - name: Check Java Version
+        run: java -version
+
+      - name: Check Maven Version
+        run: mvn -version
+
+      - name: Build Application
+        run: mvn clean package -DskipTests
+
+      - name: Run Tests
+        run: mvn test
+
+      - name: Verify Build
+        run: ls -lh target/
+
+      - name: Build Successful
+        run: echo "EasyShop Build Completed Successfully!"
